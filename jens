@@ -1,0 +1,49 @@
+pipeline {
+    agent any // Specifies where the pipeline will run. 'any' means it can run on any available agent.
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Check out your source code from the version control system
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Build your application
+                sh 'mvn clean install' // Example Maven build command
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run your tests
+                sh 'mvn test' // Example Maven test command
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Deploy your application
+                sh 'mvn deploy' // Example Maven deploy command
+            }
+        }
+    }
+
+    post {
+        success {
+            // Actions to be performed if the pipeline is successful
+            echo 'Build successful!'
+        }
+        failure {
+            // Actions to be performed if the pipeline fails
+            echo 'Build failed!'
+        }
+        always {
+            // Actions to be performed regardless of the build result
+            echo 'Pipeline completed.'
+        }
+    }
+}
+
